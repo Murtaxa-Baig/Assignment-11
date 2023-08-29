@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 
 export default function Navbar() {
-    var navLinks = document.getElementById("navLinks");
+    // var navLinks = document.getElementById("navLinks");
 
     function showMenu() {
         // navLinks.style.right = "0";

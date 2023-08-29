@@ -1,6 +1,7 @@
 import React from 'react'
 
 export default function Footer() {
+    var num = new Date().getFullYear()
     return (
         <>
             <section className="footer">
@@ -25,7 +26,7 @@ export default function Footer() {
                     </a>
                 </div>
                 <p>Made with <i className="fas fa-heart"></i> by <a href="https://github.com/Murtaxa-Baig" target='blank'>Murtaxa Baig</a></p>
-                <p>Copyright © 2021 <a href="https://github.com/Murtaxa-Baig" target='blank'>Xplore Skill</a>. All Rights Reserved</p>
+                <p>Copyright © {num} <a href="https://github.com/Murtaxa-Baig" target='blank'>Xplore Skill</a>. All Rights Reserved</p>
             </section>
 
         </>
