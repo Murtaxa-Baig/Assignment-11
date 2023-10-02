@@ -1,37 +1,77 @@
 
 const fetchCourse = async () => {
-  let response = await client.getEntries({ content_type: "courses" })
-  
-  const courses = response?.items?.map((item) => {
-    return {
-      title: item?.fields?.courseName,
-      desc: item?.fields?.description
-    }
-  })
-  return courses
+  try {
+    let response = await client.getEntries({ content_type: "courses" })
+
+    const courses = response?.items?.map((item) => {
+      return {
+        title: item?.fields?.courseName,
+        desc: item?.fields?.description
+      }
+    })
+    return courses
+
+  }
+  catch (error) {
+    console.log("Error at fetching Course card", error);
+  }
 }
 
 const fetchImg = async () => {
-  let response = await client.getEntries({ content_type: "tour" })
-  const images = response?.items?.map((items) => {
-    // console.log(items.fields.img.fields.file.url)
-    return {
-      img: items.fields.img.fields.file.url
-    }
-  })
-  return images
+  try {
+    let response = await client.getEntries({ content_type: "tour" })
+    const images = response?.items?.map((items) => {
+      // console.log(items.fields.img.fields.file.url)
+      return {
+        img: items.fields.img.fields.file.url
+      }
+    })
+    return images
+  }
+  catch (error) {
+    console.log("Error at fetching Images", error)
+  }
 }
-const fetchbestCourses = async () => {
-  let response = await client.getEntries({ content_type: "BestCourseCard" })
-  const bestCourses = response?.items?.map((items) => {
-    return {
-      title: items?.fields?.title,
-      desc: items?.fields?.Description,
-      img:items?.fields
-    }
-  })
-  return bestCourses
+const fetchFacilities = async () => {
+  // console.log('request going for facilities')
+  try {
+    let response = await client.getEntries({ content_type: "facilities" })
+    // console.log("Respone for fetch Facilities", response)
+    const bestCourses = response?.items?.map((items) => {
+      // console.log("COnsole for title", response.items.fields.title);
+      return {
+        title: items?.fields?.title,
+        desc: items?.fields?.description,
+        img: items?.fields.img.fields.file.url
+      }
+    })
+    return bestCourses
+  }
+  catch (error) {
+    console.log("Error at fetching Facilities card", error)
+  }
 }
+const fetchStudentReview = async () => {
+  // console.log('request going for facilities')
+  try {
+    let response = await client.getEntries({ content_type: "studentReview" })
+    // console.log("Respone for fetch Facilities", response)
+    const bestCourses = response?.items?.map((items) => {
+      // console.log("COnsole for title", response.items.fields.title);
+      return {
+        title: items?.fields?.title,
+        desc: items?.fields?.description,
+        img: items?.fields.img.fields.file.url
+      }
+    })
+    return bestCourses
+  }
+  catch (error) {
+    console.log("Error at fetching Facilities card", error)
+  }
+}
+
+
 
 import Image from 'next/image'
 import Navbar from './(component)/navbar/navbar'
@@ -40,24 +80,21 @@ import TextCard from './(component)/textCard/textCard'
 import ImgCard from './(component)/imgCard/imgCard'
 import ImgTextCard from './(component)/imgTextCard/imgTextCard'
 import Link from 'next/link'
-import ImgCard1 from "@/public/img/libary.png"
-import ImgCard2 from "@/public/img/playground.png"
-import ImgCard3 from "@/public/img/food.png"
 import client from '@/lib/contentful'
 
 export default async function Home() {
   const course = await fetchCourse();
   const image = await fetchImg();
-  const bestcourse = await fetchbestCourses();
-  console.log(bestcourse)
-
+  const facilitie = await fetchFacilities()
+  const StudentReview = await fetchStudentReview()
+  // const bestcourse = await fetchbestCourses();
+  // console.log(bestcourse)
 
 
   return (
     <>
       <section className="header">
         <Navbar />
-
         <div className="text_box">
           <h2>GET READY</h2>
           <p id="headtext">TO DISCOVER CAMPUS</p>
@@ -126,9 +163,15 @@ export default async function Home() {
         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
 
         <div className="row">
-          <ImgCard title="Best Libary" img={ImgCard1} />
-          <ImgCard title="Athletics" img={ImgCard2} />
-          <ImgCard title="Tasty and Healthy Food" img={ImgCard3} />
+          {
+            facilitie.map((item) => {
+              return (
+                <>
+                  <ImgCard title={item.title} description={item.desc} img={`https:${item.img}`} />
+                </>
+              )
+            })
+          }
         </div>
       </section>
 
@@ -141,8 +184,16 @@ export default async function Home() {
         <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
 
         <div className="row">
-          <ImgTextCard />
-          <ImgTextCard />
+          {
+            StudentReview.map((item) => {
+              return (
+                <>
+                  <ImgTextCard title={item.title} description={item.desc} img={`https:${item.img}`}  />
+                  {/* <ImgTextCard /> */}
+                </>
+              )
+            })
+          }
         </div>
       </section>
 
